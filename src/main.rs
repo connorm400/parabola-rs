@@ -9,5 +9,9 @@ fn main() {
         <div class="block">   
             <QuadraticFormulaSolver/>
         </div>
+        <br/> <br/>
+        <div class="block">
+            <h2>"hello, world!"</h2>
+        </div>
     });
 }

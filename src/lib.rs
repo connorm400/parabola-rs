@@ -9,7 +9,6 @@ macro_rules! validate_float_input {
             .value()
             .parse::<f64>()
             .expect("how did that happen"));
-        
     };
 }
 
@@ -25,7 +24,7 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
     let (c, set_c) = create_signal(0.0);
     let input_element_c: NodeRef<html::Input> = create_node_ref();
 
-    let (answer, set_answer) = create_signal(String::from("..."));
+    let (answer, set_answer) = create_signal("...".to_string());
 
     let on_submit = move |ev: SubmitEvent| {
         ev.prevent_default();
@@ -74,13 +73,19 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
             />
         </form>
 
-        //<p>"Answer a:"{a}" b:"{b}" c:"{c}</p>
         <p>"➡️ Quadratic formula answer is " {answer}</p>
     }
 }
 
+// dw about this its just some boiler plate for the custom ImaginaryNumber error
 #[derive(PartialEq, Eq, Debug)]
-struct ImaginaryNumber;
+pub struct ImaginaryNumber;
+impl std::fmt::Display for ImaginaryNumber {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "imaginary number")
+    }
+}
+impl std::error::Error for ImaginaryNumber {}
 
 fn quadratic_formula(a: f64, b: f64, c: f64) -> Result<(f64, f64), ImaginaryNumber> {
     // putting this into a variable to reuse it
