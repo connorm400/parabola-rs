@@ -504,11 +504,11 @@ function __wbg_get_imports() {
         throw new Error(getStringFromWasm0(arg0, arg1));
     };
     imports.wbg.__wbindgen_closure_wrapper321 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 58, __wbg_adapter_18);
+        const ret = makeMutClosure(arg0, arg1, 51, __wbg_adapter_18);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper1315 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 176, __wbg_adapter_21);
+    imports.wbg.__wbindgen_closure_wrapper1347 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 175, __wbg_adapter_21);
         return addHeapObject(ret);
     };
 
@@ -549,7 +549,7 @@ async function __wbg_init(input) {
     if (wasm !== undefined) return wasm;
 
     if (typeof input === 'undefined') {
-        input = new URL('parabola-rs-117381b8727b2460_bg.wasm', import.meta.url);
+        input = new URL('parabola-rs-ac8e381d59f004c5_bg.wasm', import.meta.url);
     }
     const imports = __wbg_get_imports();
 

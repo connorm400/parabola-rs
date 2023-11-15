@@ -94,8 +94,9 @@ impl std::fmt::Display for MathError {
 }
 
 pub fn quadratic_formula(a: f64, b: f64, c: f64) -> Result<(f64, f64), MathError> {
+    // check if any of the supplied arguments are 0 for divide by zero reasons
     for i in [a, b, c].iter() {
-        if *i == 0_f64 { return Err(MathError::Undefined)}
+        if *i == 0_f64 {return Err(MathError::Undefined)}
     }
     // putting this into a variable to reuse it
     let mut discriminant = b.powf(2.0) - 4_f64 * a * c;
@@ -109,7 +110,7 @@ pub fn quadratic_formula(a: f64, b: f64, c: f64) -> Result<(f64, f64), MathError
 
 #[cfg(test)]
 mod tests {
-    use crate::*;
+    use super::*;
 
     #[test]
     fn test_quadratic_formula() {
