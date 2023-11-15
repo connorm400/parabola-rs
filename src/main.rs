@@ -1,7 +1,8 @@
 use leptos::*;
-use parabola_rs::QuadraticFormulaSolver;
+use parabola_rs::{QuadraticFormulaSolver, quadratic_formula};
 
 fn main() {
+    println!("{:?}", quadratic_formula(0.0, 0.0, 0.0));
     mount_to_body(|| view! {
         <h1>"Parabola Solver"</h1>
         <hr/>
@@ -11,7 +12,7 @@ fn main() {
         </div>
         <br/> <br/>
         <div class="block">
-            <h2>"hello, world!"</h2>
+            <h2>"some other thing"</h2>
         </div>
     });
 }

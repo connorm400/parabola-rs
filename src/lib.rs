@@ -14,7 +14,7 @@ macro_rules! validate_float_input {
 
 #[component]
 pub fn QuadraticFormulaSolver() -> impl IntoView {
-    // creating a bunch of reactive getters and setters
+    // creating a bunch of reactive getters and setters for each input element
     let (a, set_a) = create_signal(0.0);
     let input_element_a: NodeRef<html::Input> = create_node_ref();
 
@@ -34,9 +34,9 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
         validate_float_input!(set_c, input_element_c);
 
         set_answer(match quadratic_formula(a(), b(), c()) {
-            Ok((a, b)) if a == b => format!("{a}"),
-            Ok((a, b)) => format!("{a} and {b}"),
-            Err(_e) => "an imaginary number".to_owned()
+            Ok((a, b)) if a == b => format!("{a}."),
+            Ok((a, b)) => format!("{a} and {b}."),
+            Err(e) => format!("{e}."),
         });
     };
 
@@ -46,7 +46,7 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
             <label>"A: "</label>
             <input type="number"
              step=0.01
-             required="true"
+             required=true
              value=a
              node_ref=input_element_a
             />
@@ -54,7 +54,7 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
             <label>" B: "</label>
             <input type="number"
              step=0.01
-             required="true"
+             required=true
              value=b
              node_ref=input_element_b
             />
@@ -62,7 +62,7 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
             <label>" C: "</label>
             <input type="number"
              step=0.01
-             required="true"
+             required=true
              value=c
              node_ref=input_element_c
             />
@@ -79,19 +79,28 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
 
 // dw about this its just some boiler plate for the custom ImaginaryNumber error
 #[derive(PartialEq, Eq, Debug)]
-pub struct ImaginaryNumber;
-impl std::fmt::Display for ImaginaryNumber {
+pub enum MathError {
+    Imaginary,
+    Undefined
+}
+impl std::error::Error for MathError {}
+impl std::fmt::Display for MathError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "imaginary number")
+        write!(f, "{}", match self {
+            MathError::Imaginary => "an imaginary number",
+            MathError::Undefined => "undefined"
+        })
     }
 }
-impl std::error::Error for ImaginaryNumber {}
 
-fn quadratic_formula(a: f64, b: f64, c: f64) -> Result<(f64, f64), ImaginaryNumber> {
+pub fn quadratic_formula(a: f64, b: f64, c: f64) -> Result<(f64, f64), MathError> {
+    for i in [a, b, c].iter() {
+        if *i == 0_f64 { return Err(MathError::Undefined)}
+    }
     // putting this into a variable to reuse it
     let mut discriminant = b.powf(2.0) - 4_f64 * a * c;
     // check if the answer would be imagninary
-    if discriminant < 0.0 { return Err(ImaginaryNumber)}
+    if discriminant < 0.0 { return Err(MathError::Imaginary)}
     // square root it
     discriminant = discriminant.sqrt();
     //return answer (rust has implicit returns where the last expression is returned)
@@ -100,13 +109,14 @@ fn quadratic_formula(a: f64, b: f64, c: f64) -> Result<(f64, f64), ImaginaryNumb
 
 #[cfg(test)]
 mod tests {
-    use crate::quadratic_formula;
+    use crate::*;
 
     #[test]
     fn test_quadratic_formula() {
         assert_eq!(Ok((3.0, 2.0)), quadratic_formula(1.0, -5.0, 6.0));
         assert_eq!(Ok((2.0, 2.0)), quadratic_formula(1.0, -4.0, 4.0));
         // if the descriminant is negative it will return an error
-        assert_eq!(Err(crate::ImaginaryNumber), quadratic_formula(4.0, 2.0, 6.0));
+        assert_eq!(Err(MathError::Imaginary), quadratic_formula(4.0, 2.0, 6.0));
+        assert_eq!(Err(MathError::Undefined), quadratic_formula(0.0, 0.0, 0.0));
     }
 }
