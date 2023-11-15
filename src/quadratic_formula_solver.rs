@@ -1,16 +1,6 @@
 use leptos::*;
 use web_sys::SubmitEvent;
-
-// stuffing this into a macro 
-macro_rules! validate_float_input {
-    ($setter: ident, $input_element: ident) => {
-        $setter($input_element()
-            .expect("<input> should exist")
-            .value()
-            .parse::<f64>()
-            .expect("how did that happen"));
-    };
-}
+use parabola_rs::{validate_float_input, MathError};
 
 #[component]
 pub fn QuadraticFormulaSolver() -> impl IntoView {
@@ -34,9 +24,9 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
         validate_float_input!(set_c, input_element_c);
 
         set_answer(match quadratic_formula(a(), b(), c()) {
-            Ok((a, b)) if a == b => format!("{a}."),
-            Ok((a, b)) => format!("{a} and {b}."),
-            Err(e) => format!("{e}."),
+            Ok((a, b)) if a == b => format!("{a}"),
+            Ok((a, b)) => format!("{a} and {b}"),
+            Err(e) => format!("{e}"),
         });
     };
 
@@ -69,27 +59,12 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
         
             <br/>
             <input type="submit"
+              class="calculate"
               value="calculate!"
             />
         </form>
 
-        <p>"➡️ Quadratic formula answer is " {answer}</p>
-    }
-}
-
-// dw about this its just some boiler plate for the custom ImaginaryNumber error
-#[derive(PartialEq, Eq, Debug)]
-pub enum MathError {
-    Imaginary,
-    Undefined
-}
-impl std::error::Error for MathError {}
-impl std::fmt::Display for MathError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", match self {
-            MathError::Imaginary => "an imaginary number",
-            MathError::Undefined => "undefined"
-        })
+        <p>"➡️ Quadratic formula answer is "{answer}"."</p>
     }
 }
 
