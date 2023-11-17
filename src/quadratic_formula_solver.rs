@@ -1,6 +1,9 @@
 use leptos::*;
 use web_sys::SubmitEvent;
-use parabola_rs::{validate_float_input, MathError};
+use parabola_rs::{validate_float_input, uncontrolled_number_input, MathError};
+
+
+
 
 #[component]
 pub fn QuadraticFormulaSolver() -> impl IntoView {
@@ -34,33 +37,18 @@ pub fn QuadraticFormulaSolver() -> impl IntoView {
         
         <form on:submit=on_submit>
             <label>"A: "</label>
-            <input type="number"
-             step=0.01
-             required=true
-             value=a
-             node_ref=input_element_a
-            />
+            {uncontrolled_number_input!(a, input_element_a)}
             
             <label>" B: "</label>
-            <input type="number"
-             step=0.01
-             required=true
-             value=b
-             node_ref=input_element_b
-            />
+            {uncontrolled_number_input!(b, input_element_b)}
             
             <label>" C: "</label>
-            <input type="number"
-             step=0.01
-             required=true
-             value=c
-             node_ref=input_element_c
-            />
-        
+            {uncontrolled_number_input!(c, input_element_c)}
+    
             <br/>
             <input type="submit"
               class="calculate"
-              value="calculate!"
+              value="kalculate!"
             />
         </form>
 

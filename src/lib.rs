@@ -1,6 +1,28 @@
 //! random stuff
 
+// leptos has a lot of boilerplate when it comes to components,
+// so I'm just stuffing stuff into components and metaprogramming. 
+#[macro_export]
+macro_rules! controlled_input {
+    ($getter: ident, $setter: ident) => {
+        view! { 
+            <input type="number"
+                on:input=move |ev| {
+                    if let Ok(n) = event_target_value(&ev).parse() {
+                        $setter(n)
+                    }
+                }
+                step=0.01
+                prop:value=$getter
+                class="thin"
+            />
+        }
+       
+    }
+}
+
 // stuffing this into a macro 
+// used with node refs and setters
 #[macro_export]
 macro_rules! validate_float_input {
     ($setter: ident, $input_element: ident) => {
@@ -9,6 +31,20 @@ macro_rules! validate_float_input {
             .value()
             .parse::<f64>()
             .expect("how did that happen"));
+    };
+}
+
+#[macro_export]
+macro_rules! uncontrolled_number_input {
+    ($getter: ident, $noderef: ident) => {
+        view! {
+            <input type="number"
+             step=0.01
+             required=true
+             value=$getter
+             node_ref=$noderef
+            />
+        }
     };
 }
 

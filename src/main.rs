@@ -7,7 +7,7 @@ mod parabola_solver;
 
 fn main() {
     mount_to_body(|| view! {
-        <h1>"Parabola Solver"</h1>
+        <h1>"Ronalds Universal Number Kalkulator"</h1>
         <hr/>
         <div class="block">
             <h2>"Parabola Solver"</h2>
