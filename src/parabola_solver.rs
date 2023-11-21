@@ -1,5 +1,6 @@
 use leptos::*;
 use parabola_rs::controlled_input;
+use std::rc::Rc;
 
 #[derive(Debug, PartialEq)]
 pub struct ReactivePoint {
@@ -25,13 +26,8 @@ impl ReactivePoint {
 }
 
 #[component]
-fn Point(
-    /*
-    x: ReadSignal<f64>, x_setter: WriteSignal<f64>,
-    y: ReadSignal<f64>, y_setter: WriteSignal<f64>
-    */
-    point: ReactivePoint
-) -> impl IntoView {
+fn Point(point:  Rc<ReactivePoint>) -> impl IntoView {
+    // I have to destructure this stuff to fix my macro
     let x = point.x;
     let x_setter = point.x_setter;
     let y = point.y;
@@ -40,13 +36,28 @@ fn Point(
 }
 
 #[component]
+fn Checkbox(point: Rc<ReactivePoint>) -> impl IntoView {
+    let setter = point.enabled_setter;
+    let getter = point.enabled;
+    view! {
+        <input type="checkbox"
+        on:input=move |ev| {
+            setter(event_target_checked(&ev));
+        }
+        prop:value=getter
+        />
+    }
+}
+    
+
+#[component]
 pub fn ParabolaSolver() -> impl IntoView {
-    let vertex = ReactivePoint::new();
-    let point1 = ReactivePoint::new();
-    let point2 = ReactivePoint::new();
+    let vertex = Rc::new(ReactivePoint::new());
+    let point1 = Rc::new(ReactivePoint::new());
+    let point2 = Rc::new(ReactivePoint::new());
 
     let calculate = move |_| {
-        ()
+        todo!()
     };
 
     view! {
@@ -56,26 +67,18 @@ pub fn ParabolaSolver() -> impl IntoView {
                 <th>"Point on Parabola"</th>
                 <th>"Other Point (Optional)"</th>
             </tr>
-            <tr> 
+            <tr>
+                <th><label>"using this point?"</label><Checkbox point=vertex.clone()/></th>
+                <th><label>"using this point?"</label><Checkbox point=point1.clone()/></th>
+                <th><label>"using this point?"</label><Checkbox point=point2.clone()/></th>
             </tr>
             <tr>
-                <th>
-                    <Point point=vertex/>
-                </th>
-                <th>
-                    <Point point=point1/>
-                </th>
-                <th>
-                   <Point point=point2/>
-                </th>
+                <th><Point point=vertex.clone()/></th>
+                <th><Point point=point1.clone()/></th>
+                <th><Point point=point2.clone()/></th>
             </tr>
         </table>
     
-        /*
-        <p>"vertex: ("{vertex_x}", "{vertex_y}")"</p>
-        <p>"other point: ("{point1_x}", "{point1_y}")"</p>
-        <p>"another reactive point: ("{point2_x}","{point2_y}")"</p>
-        */
         <input type="submit" 
             on:click=calculate
             class="calculate"
