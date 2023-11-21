@@ -11,6 +11,10 @@ fn main() {
         <hr/>
         <div class="block">
             <h2>"Parabola Solver"</h2>
+            <img style="height: auto; width: 100px; right: 145px; position: absolute" src="parabola.png"/>
+            <p>
+                "To solve a parabola, you need either a vertex and one other point or in some cases two points on a parabola"
+            </p>
             <ParabolaSolver/>
         </div>
 
@@ -22,6 +26,5 @@ fn main() {
             </p>
             <QuadraticFormulaSolver/>
         </div>
-        
     });
 }
