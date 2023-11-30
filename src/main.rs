@@ -17,7 +17,7 @@ fn main() {
             <h2>"Parabola Solver"</h2>
             <img class="tileimage" src="parabola.png"/>
             <p>
-                "To solve a parabola, you need either a vertex and one other pointon the parabola "<b>"or"</b>" you need three points on the parabola"
+                "To solve a parabola, you need either a vertex and one other point on the parabola "<b>"or"</b>" you need three points on the parabola"
             </p>
             <ParabolaSolver/>
         </div>
