@@ -6,13 +6,18 @@ mod parabola_solver;
 
 fn main() {
     mount_to_body(|| view! {
-        <h1>"Ronalds Universal Number Kalkulator"</h1>
+        <h1>"Ronalds Universal Number Kalkulator 🧮"</h1>
         <hr/>
+        <div class="block">
+            <h3>"Thank you for beta testing my site!"</h3>
+            <p>"be sure to fill out "<a href="https://forms.office.com/r/LfjvQSq1bg">"this form"</a>" before you go"</p>
+            <img class="qrcode" src="qrcode.png"/>
+        </div>
         <div class="block">
             <h2>"Parabola Solver"</h2>
             <img class="tileimage" src="parabola.png"/>
             <p>
-                "To solve a parabola, you need either a vertex and one other point or in some cases three points on a parabola"
+                "To solve a parabola, you need either a vertex and one other pointon the parabola "<b>"or"</b>" you need three points on the parabola"
             </p>
             <ParabolaSolver/>
         </div>

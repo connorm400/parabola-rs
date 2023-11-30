@@ -519,8 +519,8 @@ function __wbg_get_imports() {
         const ret = makeMutClosure(arg0, arg1, 88, __wbg_adapter_21);
         return addHeapObject(ret);
     };
-    imports.wbg.__wbindgen_closure_wrapper1656 = function(arg0, arg1, arg2) {
-        const ret = makeMutClosure(arg0, arg1, 243, __wbg_adapter_24);
+    imports.wbg.__wbindgen_closure_wrapper1694 = function(arg0, arg1, arg2) {
+        const ret = makeMutClosure(arg0, arg1, 249, __wbg_adapter_24);
         return addHeapObject(ret);
     };
 
@@ -561,7 +561,7 @@ async function __wbg_init(input) {
     if (wasm !== undefined) return wasm;
 
     if (typeof input === 'undefined') {
-        input = new URL('parabola-rs-d9ed58bba98cc144_bg.wasm', import.meta.url);
+        input = new URL('parabola-rs-c771b9099b6b51c9_bg.wasm', import.meta.url);
     }
     const imports = __wbg_get_imports();
 
