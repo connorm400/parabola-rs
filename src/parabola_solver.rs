@@ -58,7 +58,7 @@ pub fn ParabolaSolver() -> impl IntoView {
 
         let point2_x = point2_calc.x.0.get().trim().parse();
         let point2_y = point2_calc.y.0.get().trim().parse();
-
+    
         let point3_x = point3_calc.x.0.get().trim().parse();
         let point3_y = point3_calc.y.0.get().trim().parse();
 
@@ -66,7 +66,10 @@ pub fn ParabolaSolver() -> impl IntoView {
             // terrible code basically check if all inputs are numbers without consuming anything
             match ((vertex_x, vertex_y), (point0_x, point0_y)) {
                     ((Ok(x1), Ok(y1)), (Ok(x2), Ok(y2))) => {
-                        format!("{}", find_parabola_with_vertex((x1, y1), (x2, y2)))
+                        format!("{}", match find_parabola_with_vertex((x1, y1), (x2, y2)) {
+                            Ok(a) => a.standard_form(),
+                            Err(_) => "Thats impossible (divide by zero)".into(),
+                        })
                     },
                     _ => "All inputs must be numbers".into(),
             }
@@ -96,7 +99,7 @@ pub fn ParabolaSolver() -> impl IntoView {
                 set_other_method(!vertex_radio);
             }
             prop:value=vertex_method/>
-        <label>"w/ a vertex"</label>
+        <label>"I have the vertex"</label>
         <label>" | "</label>
         
         <input type="radio" name="method" 
@@ -106,16 +109,16 @@ pub fn ParabolaSolver() -> impl IntoView {
             set_vertex_method(!vertex_radio);
         }
             prop:value=other_method/>
-        <label>"other (not implemented yet)"</label>
+        <label>"I have three points on the parabola"</label>
 
         <br/>
         <Show 
             when=vertex_method
             fallback=move || view! {/* empty */}>
             <hr style="width: 20%; margin-left: 1%;"/>
-            <label>"vertex: "</label><Point point=vertex.clone()/>
+            <label>"vertex: "</label><br/><Point point=vertex.clone()/>
             <br/>
-            <label>"other point on the parabola: "</label><Point point=point.clone()/>
+            <label>"other point on the parabola: "</label><br/><Point point=point.clone()/>
             <br/>
         </Show>
 
@@ -156,20 +159,24 @@ impl std::fmt::Display for Parabola {
 impl Parabola {
     pub fn standard_form(&self) -> String {
         let (h, k) = self.vertex;
-        if h < 0.0 {
-            format!("y = {:.1}(x + {})^2 + {k}", self.coefficient, h.abs())
-        } else {
-            format!("y = {:.1}(x - {h})^2 + {k}", self.coefficient)
-        }   
+        let h = if h < 0.0 { format!(" + {}", h.abs())} else if h == 0.0 { String::new() } else { format!(" - {h}") };
+        let k = if k < 0.0 { format!(" - {}", k.abs())} else if k == 0.0 { String::new() } else { format!(" + {k}") };
+        let a = if self.coefficient == 1.0 { String::new() } else { format!("{:.2}", self.coefficient) };
+        
+        format!("y = {a}(x{h})^2{k}")
     }
 }
+
 /// This will calculate the parabola given one points and a vertex.
 /// mostly finds the coefficient and puts the rest into the Parabola struct.
-fn find_parabola_with_vertex((x0, y0): (f64, f64), (x1, y1): (f64, f64)) -> Parabola {
-    Parabola { 
+fn find_parabola_with_vertex((x0, y0): (f64, f64), (x1, y1): (f64, f64)) -> Result<Parabola, Impossible> {
+    if x1 -x0 == 0.0 {
+        return Err(Impossible);
+    }
+    Ok(Parabola { 
         vertex: (x0, y0), 
         coefficient: (y1 - y0)/(x1 - x0).powf(2.0) 
-    }
+    })
 }
 
 pub struct Point {
