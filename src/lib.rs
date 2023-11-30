@@ -6,13 +6,8 @@
 macro_rules! controlled_input {
     ($getter: ident, $setter: ident) => {
         view! { 
-            <input type="number"
-                on:input=move |ev| {
-                    if let Ok(n) = event_target_value(&ev).parse() {
-                        $setter(n)
-                    }
-                }
-                step=0.01
+            <input type="text"
+                on:input=move |ev| $setter(event_target_value(&ev))
                 prop:value=$getter
                 class="thin"
             />

@@ -1,7 +1,6 @@
 use leptos::*;
 use quadratic_formula_solver::QuadraticFormulaSolver;
 use parabola_solver::ParabolaSolver;
-
 mod quadratic_formula_solver;
 mod parabola_solver;
 
@@ -11,13 +10,13 @@ fn main() {
         <hr/>
         <div class="block">
             <h2>"Parabola Solver"</h2>
-            <img style="height: auto; width: 100px; right: 145px; position: absolute" class="tileimage" src="parabola.png"/>
+            <img class="tileimage" src="parabola.png"/>
             <p>
-                "To solve a parabola, you need either a vertex and one other point or in some cases two points on a parabola"
+                "To solve a parabola, you need either a vertex and one other point or in some cases three points on a parabola"
             </p>
             <ParabolaSolver/>
         </div>
-
+    
         <div class="block">   
             <h2>"Quadratic Equation Solver"</h2>
             <p>
