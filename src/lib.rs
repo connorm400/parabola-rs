@@ -34,7 +34,7 @@ macro_rules! uncontrolled_number_input {
     ($getter: ident, $noderef: ident) => {
         view! {
             <input type="number"
-             step=0.01
+             step=0.0001
              required=true
              value=$getter
              node_ref=$noderef

@@ -536,7 +536,7 @@ async function __wbg_init(input) {
     if (wasm !== undefined) return wasm;
 
     if (typeof input === 'undefined') {
-        input = new URL('parabola-rs-7c43475c4cfe5049_bg.wasm', import.meta.url);
+        input = new URL('parabola-rs-ba078672851938eb_bg.wasm', import.meta.url);
     }
     const imports = __wbg_get_imports();
 
