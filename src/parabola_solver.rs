@@ -163,7 +163,15 @@ impl Parabola {
         let k = if k < 0.0 { format!(" - {}", k.abs())} else if k == 0.0 { String::new() } else { format!(" + {k}") };
         let a = if self.coefficient == 1.0 { String::new() } else { format!("{:.2}", self.coefficient) };
         
-        format!("y = {a}(x{h})^2{k}")
+        if a == "0.00" {
+            if k.is_empty() {
+                format!("y = 0")
+            } else {
+                format!("y ={k}")
+            }
+        } else {
+            format!("y = {a}(x{h})^2{k}")
+        }
     }
 }
 
